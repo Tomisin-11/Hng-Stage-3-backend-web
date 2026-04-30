@@ -1,0 +1,135 @@
+/* src/styles/global.css
+ *
+ * Design direction: Dark industrial terminal — think Bloomberg terminal meets
+ * Figma's dark mode. Monospace accents, sharp edges, amber highlights.
+ * This is a tool for power users — dense, functional, confident.
+ */
+
+:root {
+  /* ── Palette ── */
+  --bg-base:       #0a0a0f;        /* near-black with a hint of blue */
+  --bg-surface:    #111118;        /* card backgrounds */
+  --bg-raised:     #1a1a24;        /* input fields, hover states */
+  --bg-border:     #252535;        /* subtle borders */
+
+  --text-primary:  #e8e8f0;        /* main text */
+  --text-secondary:#8888aa;        /* muted labels */
+  --text-dim:      #44445a;        /* placeholders, disabled */
+
+  --accent:        #f0a500;        /* amber — the one warm colour */
+  --accent-dim:    #f0a50020;      /* amber at low opacity */
+  --accent-hover:  #ffbb33;
+
+  --danger:        #ff4d4d;
+  --success:       #22c55e;
+  --info:          #60a5fa;
+
+  /* ── Typography ── */
+  --font-mono:     'Space Mono', 'Courier New', monospace;
+  --font-sans:     'DM Sans', system-ui, sans-serif;
+
+  /* ── Spacing scale ── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* ── Radius ── */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* ── Transitions ── */
+  --transition: 0.15s ease;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--bg-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+/* Links */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+a:hover { color: var(--accent-hover); }
+
+/* Buttons base */
+button {
+  cursor: pointer;
+  font-family: var(--font-sans);
+  border: none;
+  outline: none;
+  transition: all var(--transition);
+}
+
+/* Input base */
+input, textarea, select {
+  font-family: var(--font-sans);
+  background: var(--bg-raised);
+  border: 1px solid var(--bg-border);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color var(--transition);
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--accent);
+}
+input::placeholder { color: var(--text-dim); }
+
+/* Utility classes */
+.mono { font-family: var(--font-mono); }
+.text-muted { color: var(--text-secondary); }
+.text-danger { color: var(--danger); }
+.text-success { color: var(--success); }
+.text-accent { color: var(--accent); }
+
+/* Loading spinner */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.spinner {
+  width: 20px; height: 20px;
+  border: 2px solid var(--bg-border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.3s ease forwards; }
