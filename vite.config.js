@@ -10,8 +10,6 @@ export default defineConfig({
         target: 'http://localhost:4000',
         changeOrigin: true,
       },
-      // Proxy /auth/* to backend BUT exclude /auth/callback
-      // which is a frontend React route handled by the browser
       '/auth/github': {
         target: 'http://localhost:4000',
         changeOrigin: true,

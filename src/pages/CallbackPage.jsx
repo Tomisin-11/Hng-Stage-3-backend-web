@@ -1,21 +1,11 @@
 // src/pages/CallbackPage.jsx
-//
-// Handles the OAuth redirect from the backend.
-//
-// FLOW:
-//   1. Backend sets refresh_token as HTTP-only cookie
-//   2. Backend redirects browser to /auth/callback?access_token=X&expires_in=180
-//   3. This page reads the access_token from the URL
-//   4. Stores it in memory (setAccessToken)
-//   5. Fetches /auth/me to get the full user object
-//   6. Strips the token from the URL bar (security hygiene)
-//   7. Redirects to /dashboard
-
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { setAccessToken } from '../utils/apiClient.js';
 import { useAuth } from '../hooks/useAuth.jsx';
+
+const BASE = import.meta.env.VITE_API_BASE || '';
 
 export default function CallbackPage() {
   const [error, setError] = useState(null);
@@ -27,24 +17,13 @@ export default function CallbackPage() {
     const accessToken = searchParams.get('access_token');
     const oauthError = searchParams.get('error');
 
-    if (oauthError) {
-      setError(`GitHub denied access: ${oauthError}`);
-      return;
-    }
+    if (oauthError) { setError(`GitHub denied access: ${oauthError}`); return; }
+    if (!accessToken) { setError('No access token received'); return; }
 
-    if (!accessToken) {
-      setError('No access token received');
-      return;
-    }
-
-    // 1. Store access token in memory
     setAccessToken(accessToken);
-
-    // 2. Strip token from URL immediately (don't leave it in browser history)
     window.history.replaceState({}, document.title, '/auth/callback');
 
-    // 3. Fetch user profile
-    axios.get('/auth/me', {
+    axios.get(`${BASE}/auth/me`, {
       headers: { Authorization: `Bearer ${accessToken}` },
       withCredentials: true,
     })
